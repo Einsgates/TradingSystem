@@ -16,9 +16,25 @@ public class OrderBook {
         this.allOrders = new HashMap<>();
     }
 
-    public void addOrder(Order order) {}
+    public void addOrder(Order order) {
+        allOrders.put(order.getOrderId(), order);
+        if (order.getType() == Order.OrderType.BUY) {
+            buyOrders.offer(order);
+        } else if (order.getType() == Order.OrderType.SELL) {
+            sellOrders.offer(order);
+        }
+    }
 
     public boolean removeOrder(String orderId) {
+        Order order = allOrders.remove(orderId);
+        if (order == null) {
+            return false;
+        }
+        if (order.getType() == Order.OrderType.BUY) {
+            buyOrders.remove(order);
+        } else if (order.getType() == Order.OrderType.SELL) {
+            sellOrders.remove(order);
+        }
         return true;
     }
 
